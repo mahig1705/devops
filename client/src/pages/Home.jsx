@@ -61,7 +61,7 @@ const Home = ({ userEmail, userRole }) => {
         <div>
             {/* Hero Section */}
             <div className="hero-section text-white py-5" style={{ 
-                background: 'linear-gradient(135deg, #1e3c72 0%, #2a5298 100%)',
+                background: 'linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%)',
                 minHeight: '60vh',
                 display: 'flex',
                 alignItems: 'center'
@@ -70,7 +70,7 @@ const Home = ({ userEmail, userRole }) => {
                     <div className="row align-items-center">
                         <div className="col-lg-6">
                             <h1 className="display-4 fw-bold mb-4">Smart Campus Complaint System</h1>
-                            <h3 className="mb-4" style={{ color: '#FFD700' }}>Kongu Engineering College</h3>
+                            <h3 className="mb-4" style={{ color: '#FFD700' }}>Bharatiya Vidya Bhavan's Sardar Patel Institute of Technology (SPIT)</h3>
                             <p className="lead mb-4">Empowering students, staff, and administrators with a transparent and efficient complaint management system. Experience seamless issue resolution and real-time tracking.</p>
                         {!userEmail && (
                                 <div className="d-flex gap-3">
@@ -261,7 +261,7 @@ const Home = ({ userEmail, userRole }) => {
                 <div className="container">
                     <div className="row">
                         <div className="col-lg-4 mb-4">
-                            <h5 className="mb-3" style={{ color: '#FFD700' }}>Kongu Engineering College</h5>
+                            <h5 className="mb-3" style={{ color: '#FFD700' }}>Sardar Patel Institute of Technology</h5>
                             <p className="mb-3">Empowering students with innovative technology solutions for a better campus experience.</p>
                             <div className="d-flex gap-3">
                                 <button className="btn btn-link text-white p-0 border-0 bg-transparent">
@@ -290,23 +290,22 @@ const Home = ({ userEmail, userRole }) => {
                         <div className="col-lg-3 col-md-6 mb-4">
                             <h6 className="mb-3" style={{ color: '#FFD700' }}>Departments</h6>
                             <ul className="list-unstyled">
-                                <li><button className="btn btn-link text-white-50 text-decoration-none p-0 border-0 bg-transparent">Computer Science</button></li>
-                                <li><button className="btn btn-link text-white-50 text-decoration-none p-0 border-0 bg-transparent">Information Technology</button></li>
-                                <li><button className="btn btn-link text-white-50 text-decoration-none p-0 border-0 bg-transparent">Mechanical Engineering</button></li>
-                                <li><button className="btn btn-link text-white-50 text-decoration-none p-0 border-0 bg-transparent">Electrical Engineering</button></li>
+                                <li><button className="btn btn-link text-white-50 text-decoration-none p-0 border-0 bg-transparent">Computer Engineering (CE)</button></li>
+                                <li><button className="btn btn-link text-white-50 text-decoration-none p-0 border-0 bg-transparent">Computer Science and Engineering (CSE)</button></li>
+                                <li><button className="btn btn-link text-white-50 text-decoration-none p-0 border-0 bg-transparent">Electronics and Telecommunication (EXTC)</button></li>
                             </ul>
                         </div>
                         <div className="col-lg-3 mb-4">
                             <h6 className="mb-3" style={{ color: '#FFD700' }}>Contact Info</h6>
-                            <p className="mb-2"><i className="fas fa-map-marker-alt me-2"></i>Perundurai, Erode, Tamil Nadu</p>
-                            <p className="mb-2"><i className="fas fa-phone me-2"></i>+91 4294 226565</p>
-                            <p className="mb-2"><i className="fas fa-envelope me-2"></i>info@kongu.ac.in</p>
+                            <p className="mb-2"><i className="fas fa-map-marker-alt me-2"></i>Bhavan's Campus, Munshi Nagar, Andheri (West), Mumbai</p>
+                            <p className="mb-2"><i className="fas fa-phone me-2"></i>+91 22 2628 7250</p>
+                            <p className="mb-2"><i className="fas fa-envelope me-2"></i>principal@spit.ac.in</p>
                         </div>
                     </div>
                     <hr className="my-4" />
                     <div className="row align-items-center">
                         <div className="col-md-6">
-                            <p className="mb-0">&copy; 2025 Kongu Engineering College. All rights reserved.</p>
+                            <p className="mb-0">&copy; 2025 Sardar Patel Institute of Technology. All rights reserved.</p>
                         </div>
                         <div className="col-md-6 text-md-end">
                             <p className="mb-0">Smart Campus Complaint System v1.0</p>

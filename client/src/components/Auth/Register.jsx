@@ -111,20 +111,9 @@ const Register = () => {
                             required
                         >
                             <option value="">Select {role === 'student' ? 'Department/Branch' : 'Department/Area'}</option>
-                            <option value="IT">IT</option>
+                            <option value="CE">CE</option>
                             <option value="CSE">CSE</option>
-                            <option value="CSD">CSD</option>
-                            <option value="MECH">MECH</option>
-                            <option value="ECE">ECE</option>
-                            <option value="EEE">EEE</option>
-                            <option value="EIE">EIE</option>
-                            <option value="AUTOMOB">AUTOMOB</option>
-                            <option value="MTS">MTS</option>
-                            <option value="AIDS">AIDS</option>
-                            <option value="AIML">AIML</option>
-                            <option value="CHEM">CHEM</option>
-                            <option value="FT">FT</option>
-                            <option value="1ST YEAR">1ST YEAR</option>
+                            <option value="EXTC">EXTC</option>
                             {role === 'staff' && <>
                                 <option value="Hostel">Hostel</option>
                                 <option value="Transport">Transport</option>

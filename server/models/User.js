@@ -24,6 +24,7 @@ const userSchema = new mongoose.Schema({
     department: {
         type: String,
         required: true,
+        enum: ['CE', 'CSE', 'EXTC', 'Hostel', 'Transport', 'Mess', 'Maintenance']
     },
     createdAt: {
         type: Date,
