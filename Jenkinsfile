@@ -2,12 +2,6 @@ pipeline {
     agent any
 
     stages {
-        stage('Clone') {
-            steps {
-                git 'YOUR_REPO_URL'
-            }
-        }
-
         stage('Build Docker Image') {
             steps {
                 sh 'docker build -t complaint-backend .'
