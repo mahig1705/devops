@@ -3,12 +3,6 @@ pipeline {
 
     stages {
 
-        stage('Clone Repo') {
-            steps {
-                git 'https://github.com/mahig1705/devops'
-            }
-        }
-
         stage('Build Docker Image') {
             steps {
                 sh 'docker build -t complaint-backend ./server'
