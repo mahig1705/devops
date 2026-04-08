@@ -17,7 +17,7 @@ pipeline {
 
         stage('Deploy using Ansible') {
             steps {
-                sh 'sudo /usr/bin/ansible-playbook -i inventory deploy.yml'
+                sh 'ansible-playbook -i inventory deploy.yml'
             }
         }
     }
