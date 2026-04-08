@@ -4,9 +4,9 @@ import axios from 'axios';
 import { useHistory } from 'react-router-dom';
 
 const statusColors = {
-  'pending': 'secondary',
-  'in-progress': 'warning',
-  'resolved': 'success'
+    'pending': 'secondary',
+    'in-progress': 'warning',
+    'resolved': 'success'
 };
 
 const MyComplaints = () => {
@@ -101,8 +101,8 @@ const MyComplaints = () => {
         .filter(c => {
             const matchesFilter = filter === 'all' || c.status === filter;
             const matchesSearch = c.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                                c.category.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                                c.description.toLowerCase().includes(searchTerm.toLowerCase());
+                c.category.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                c.description.toLowerCase().includes(searchTerm.toLowerCase());
             return matchesFilter && matchesSearch;
         })
         .sort((a, b) => {
@@ -226,20 +226,20 @@ const MyComplaints = () => {
                     <div className="card-body">
                         <h6 className="card-title mb-3">Complaint Status Overview</h6>
                         <div className="progress mb-2" style={{ height: '25px' }}>
-                            <div 
-                                className="progress-bar bg-success" 
+                            <div
+                                className="progress-bar bg-success"
                                 style={{ width: `${(stats.resolved / stats.total) * 100}%` }}
                             >
                                 {stats.resolved} Resolved
                             </div>
-                            <div 
-                                className="progress-bar bg-warning" 
+                            <div
+                                className="progress-bar bg-warning"
                                 style={{ width: `${(stats.inProgress / stats.total) * 100}%` }}
                             >
                                 {stats.inProgress} In Progress
                             </div>
-                            <div 
-                                className="progress-bar bg-secondary" 
+                            <div
+                                className="progress-bar bg-secondary"
                                 style={{ width: `${(stats.pending / stats.total) * 100}%` }}
                             >
                                 {stats.pending} Pending
@@ -259,13 +259,13 @@ const MyComplaints = () => {
                         <i className="fas fa-inbox text-muted mb-3" style={{ fontSize: '4rem' }}></i>
                         <h5 className="text-muted">No complaints found</h5>
                         <p className="text-muted">
-                            {complaints.length === 0 
-                                ? "You haven't submitted any complaints yet." 
+                            {complaints.length === 0
+                                ? "You haven't submitted any complaints yet."
                                 : "No complaints match your current filters."}
                         </p>
-                {complaints.length === 0 && (
-                            <button 
-                                className="btn btn-primary" 
+                        {complaints.length === 0 && (
+                            <button
+                                className="btn btn-primary"
                                 onClick={() => history.push('/complaints/new')}
                             >
                                 <i className="fas fa-plus me-1"></i>Submit Your First Complaint
@@ -274,8 +274,8 @@ const MyComplaints = () => {
                     </div>
                 ) : (
                     filteredAndSortedComplaints.map(c => (
-                    <div className="col-md-6 col-lg-4 mb-4" key={c._id}>
-                        <div className="card shadow-sm h-100">
+                        <div className="col-md-6 col-lg-4 mb-4" key={c._id}>
+                            <div className="card shadow-sm h-100">
                                 <div className="card-header bg-transparent">
                                     <div className="d-flex justify-content-between align-items-start">
                                         <h6 className="card-title mb-0 text-truncate" style={{ maxWidth: '200px' }}>
@@ -286,7 +286,7 @@ const MyComplaints = () => {
                                         </span>
                                     </div>
                                 </div>
-                            <div className="card-body">
+                                <div className="card-body">
                                     <div className="mb-2">
                                         <span className="badge bg-info">{c.category}</span>
                                     </div>
@@ -295,7 +295,7 @@ const MyComplaints = () => {
                                         {new Date(c.date).toLocaleDateString()}
                                     </p>
                                     <p className="card-text small mb-2">
-                                        <strong>Description:</strong> {c.description.length > 100 ? 
+                                        <strong>Description:</strong> {c.description.length > 100 ?
                                             c.description.substring(0, 100) + '...' : c.description}
                                     </p>
                                     {c.imageUrl && (
@@ -315,7 +315,7 @@ const MyComplaints = () => {
                                             </small>
                                         </div>
                                     )}
-                                    
+
                                     {/* Feedback form for resolved complaints without feedback */}
                                     {c.status === 'resolved' && !hasFeedback(c._id) && !feedbackState[c._id]?.submitted && (
                                         <div className="mt-3 p-3 bg-light rounded">
@@ -324,32 +324,32 @@ const MyComplaints = () => {
                                             </h6>
                                             <div className="mb-2">
                                                 <label className="form-label small">Rating</label>
-                                                <select 
-                                                    className="form-select form-select-sm" 
-                                                    value={feedbackState[c._id]?.rating || ''} 
-                                                    onChange={e => handleFeedbackChange(c._id, 'rating', e.target.value)} 
+                                                <select
+                                                    className="form-select form-select-sm"
+                                                    value={feedbackState[c._id]?.rating || ''}
+                                                    onChange={e => handleFeedbackChange(c._id, 'rating', e.target.value)}
                                                     required
                                                 >
-                                                <option value="">Select Rating</option>
-                                                <option value="1">1 - Poor</option>
+                                                    <option value="">Select Rating</option>
+                                                    <option value="1">1 - Poor</option>
                                                     <option value="2">2 - Fair</option>
                                                     <option value="3">3 - Good</option>
                                                     <option value="4">4 - Very Good</option>
-                                                <option value="5">5 - Excellent</option>
-                                            </select>
-                                        </div>
-                                        <div className="mb-2">
+                                                    <option value="5">5 - Excellent</option>
+                                                </select>
+                                            </div>
+                                            <div className="mb-2">
                                                 <label className="form-label small">Comment (optional)</label>
-                                                <textarea 
-                                                    className="form-control form-control-sm" 
-                                                    value={feedbackState[c._id]?.comment || ''} 
+                                                <textarea
+                                                    className="form-control form-control-sm"
+                                                    value={feedbackState[c._id]?.comment || ''}
                                                     onChange={e => handleFeedbackChange(c._id, 'comment', e.target.value)}
                                                     placeholder="Share your experience..."
                                                     rows="2"
                                                 />
                                             </div>
-                                            <button 
-                                                className="btn btn-success btn-sm w-100" 
+                                            <button
+                                                className="btn btn-success btn-sm w-100"
                                                 onClick={() => submitFeedback(c._id, feedbackState[c._id]?.rating, feedbackState[c._id]?.comment)}
                                             >
                                                 <i className="fas fa-paper-plane me-1"></i>Submit Feedback
@@ -359,8 +359,8 @@ const MyComplaints = () => {
                                     {feedbackState[c._id]?.submitted && (
                                         <div className="alert alert-success py-2 mb-2 small">
                                             <i className="fas fa-check-circle me-1"></i>Thank you for your feedback!
-                                    </div>
-                                )}
+                                        </div>
+                                    )}
                                     {hasFeedback(c._id) && (
                                         <div className="alert alert-info py-2 mb-2 small">
                                             <i className="fas fa-star me-1"></i>Feedback submitted

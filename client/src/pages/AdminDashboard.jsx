@@ -3,9 +3,9 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
 const statusColors = {
-  'pending': 'secondary',
-  'in-progress': 'warning',
-  'resolved': 'success'
+    'pending': 'secondary',
+    'in-progress': 'warning',
+    'resolved': 'success'
 };
 
 const AdminDashboard = () => {
@@ -56,7 +56,7 @@ const AdminDashboard = () => {
                 alert('Please select a staff member to assign.');
                 return;
             }
-            
+
             await axios.put(`http://13.61.146.37:5000/api/complaints/${complaintId}/assign`, { staffId }, {
                 headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
             });
