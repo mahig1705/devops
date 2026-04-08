@@ -26,7 +26,7 @@ const AdminDashboard = () => {
     const fetchComplaints = async () => {
         setLoading(true);
         try {
-            const res = await axios.get('/api/complaints', {
+            const res = await axios.get('http://13.61.146.37:5000/api/complaints', {
                 headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
             });
             setComplaints(res.data);
@@ -38,7 +38,7 @@ const AdminDashboard = () => {
 
     const fetchStaff = async () => {
         try {
-            const res = await axios.get('/api/auth/staff', {
+            const res = await axios.get('http://13.61.146.37:5000/api/auth/staff', {
                 headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
             });
             console.log('Staff data received:', res.data);
@@ -57,7 +57,7 @@ const AdminDashboard = () => {
                 return;
             }
             
-            await axios.put(`/api/complaints/${complaintId}/assign`, { staffId }, {
+            await axios.put(`http://13.61.146.37:5000/api/complaints/${complaintId}/assign`, { staffId }, {
                 headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
             });
             console.log(`Complaint ${complaintId} assigned to staff ${staffId}`);
@@ -77,7 +77,7 @@ const AdminDashboard = () => {
     };
 
     const handleStatusUpdate = async (complaintId) => {
-        await axios.put(`/api/complaints/${complaintId}/status`, {
+        await axios.put(`http://13.61.146.37:5000/api/complaints/${complaintId}/status`, {
             status: statusEdit[complaintId],
             resolutionNotes: notesEdit[complaintId]
         }, {

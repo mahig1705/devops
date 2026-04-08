@@ -25,7 +25,7 @@ const MyComplaints = () => {
     const fetchComplaints = async () => {
         setLoading(true);
         try {
-            const complaintsRes = await axios.get('/api/complaints/my', {
+            const complaintsRes = await axios.get('http://13.61.146.37:5000/api/complaints/my', {
                 headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
             });
             setComplaints(complaintsRes.data);
@@ -37,7 +37,7 @@ const MyComplaints = () => {
 
     const fetchFeedbacks = async () => {
         try {
-            const feedbacksRes = await axios.get('/api/feedback', {
+            const feedbacksRes = await axios.get('http://13.61.146.37:5000/api/feedback', {
                 headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
             });
             setFeedbacks(feedbacksRes.data);
@@ -48,7 +48,7 @@ const MyComplaints = () => {
 
     const fetchProfile = async () => {
         try {
-            const profileRes = await axios.get('/api/auth/profile', {
+            const profileRes = await axios.get('http://13.61.146.37:5000/api/auth/profile', {
                 headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
             });
             setUserInfo(profileRes.data);
@@ -85,7 +85,7 @@ const MyComplaints = () => {
 
     const submitFeedback = async (complaintId, rating, comment) => {
         try {
-            await axios.post('/api/feedback', { complaintId, rating, comment }, {
+            await axios.post('http://13.61.146.37:5000/api/feedback', { complaintId, rating, comment }, {
                 headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
             });
             fetchFeedbacks();

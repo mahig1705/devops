@@ -26,7 +26,7 @@ const ComplaintForm = () => {
             formData.append('category', category);
             formData.append('dueInDays', dueInDays);
             if (image) formData.append('image', image);
-            await axios.post('/api/complaints', formData, {
+            await axios.post('http://13.61.146.37:5000/api/complaints', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                     Authorization: `Bearer ${localStorage.getItem('token')}`

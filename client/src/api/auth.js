@@ -2,7 +2,7 @@
 
 import axios from 'axios';
 
-const API_URL = '/api/auth/';
+const API_URL = 'http://13.61.146.37:5000/api/auth/';
 
 // Register user
 const register = async (userData) => {
