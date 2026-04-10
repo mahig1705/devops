@@ -25,7 +25,7 @@ const Register = () => {
 
         try {
             // 1. Register the user
-            await axios.post('http://13.61.146.37:5000/api/auth/register', {
+            await axios.post('http://13.61.64.60:5000/api/auth/register', { 
                 email: email.trim(),
                 password,
                 name: name.trim(),
