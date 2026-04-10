@@ -9,12 +9,6 @@ pipeline {
 
     stages {
 
-        stage('Checkout Code') {
-            steps {
-                git 'https://github.com/mahig1705/devops'
-            }
-        }
-
         stage('Build Backend Image') {
             steps {
                 sh 'docker build -t complaint-backend ./server'
