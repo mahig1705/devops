@@ -13,7 +13,7 @@ const ComplaintDetail = () => {
         const fetchComplaint = async () => {
             setLoading(true);
             try {
-                const res = await axios.get(`http://13.61.64.60:5000/api/complaints/${id}`, {
+                const res = await axios.get(`/api/complaints/${id}`, {
                     headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
                 });
                 setComplaint(res.data);

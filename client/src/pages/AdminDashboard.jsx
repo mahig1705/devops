@@ -3,9 +3,9 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
 const statusColors = {
-    'pending': 'secondary',
-    'in-progress': 'warning',
-    'resolved': 'success'
+  'pending': 'secondary',
+  'in-progress': 'warning',
+  'resolved': 'success'
 };
 
 const AdminDashboard = () => {
@@ -26,7 +26,7 @@ const AdminDashboard = () => {
     const fetchComplaints = async () => {
         setLoading(true);
         try {
-            const res = await axios.get('http://13.61.64.60:5000/api/complaints', {
+            const res = await axios.get('/api/complaints', {
                 headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
             });
             setComplaints(res.data);
@@ -38,7 +38,7 @@ const AdminDashboard = () => {
 
     const fetchStaff = async () => {
         try {
-            const res = await axios.get('http://13.61.64.60:5000/api/auth/staff', {
+            const res = await axios.get('/api/auth/staff', {
                 headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
             });
             console.log('Staff data received:', res.data);
@@ -56,8 +56,8 @@ const AdminDashboard = () => {
                 alert('Please select a staff member to assign.');
                 return;
             }
-
-            await axios.put(`http://13.61.64.60:5000/api/complaints/${complaintId}/assign`, { staffId }, {
+            
+            await axios.put(`/api/complaints/${complaintId}/assign`, { staffId }, {
                 headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
             });
             console.log(`Complaint ${complaintId} assigned to staff ${staffId}`);
@@ -77,7 +77,7 @@ const AdminDashboard = () => {
     };
 
     const handleStatusUpdate = async (complaintId) => {
-        await axios.put(`http://13.61.64.60:5000/api/complaints/${complaintId}/status`, {
+        await axios.put(`/api/complaints/${complaintId}/status`, {
             status: statusEdit[complaintId],
             resolutionNotes: notesEdit[complaintId]
         }, {
