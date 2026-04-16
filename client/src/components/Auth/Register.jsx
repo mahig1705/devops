@@ -16,21 +16,21 @@ const Register = () => {
         e.preventDefault();
         setError('');
         setSuccess('');
-        
+
         // Validate required fields
         if (!name.trim() || !email.trim() || !password.trim() || !department.trim()) {
             setError('All fields are required');
             return;
         }
-        
+
         try {
             // 1. Register the user
-            await axios.post('https://campus-complaint-system.onrender.com/api/auth/register', { 
-                email: email.trim(), 
-                password, 
-                name: name.trim(), 
-                role, 
-                department: department.trim() 
+            await axios.post('/api/auth/register', {
+                email: email.trim(),
+                password,
+                name: name.trim(),
+                role,
+                department: department.trim()
             });
 
             // 2. Redirect based on role
@@ -91,9 +91,9 @@ const Register = () => {
                     </div>
                     <div className="mb-3">
                         <label className="form-label">Role</label>
-                        <select 
-                            className="form-select" 
-                            value={role} 
+                        <select
+                            className="form-select"
+                            value={role}
                             onChange={(e) => setRole(e.target.value)}
                             autoComplete="off"
                         >
@@ -103,10 +103,10 @@ const Register = () => {
                     </div>
                     <div className="mb-4">
                         <label className="form-label">{role === 'student' ? 'Department/Branch' : 'Department/Area'}</label>
-                        <select 
-                            className="form-select" 
-                            value={department} 
-                            onChange={e => setDepartment(e.target.value)} 
+                        <select
+                            className="form-select"
+                            value={department}
+                            onChange={e => setDepartment(e.target.value)}
                             autoComplete="off"
                             required
                         >

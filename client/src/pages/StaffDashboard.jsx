@@ -3,9 +3,9 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
 const statusColors = {
-  'pending': 'secondary',
-  'in-progress': 'warning',
-  'resolved': 'success'
+    'pending': 'secondary',
+    'in-progress': 'warning',
+    'resolved': 'success'
 };
 
 const StaffDashboard = () => {
@@ -25,7 +25,7 @@ const StaffDashboard = () => {
     const fetchAssignedComplaints = async () => {
         setLoading(true);
         try {
-            const res = await axios.get('https://campus-complaint-system.onrender.com/api/complaints/assigned', {
+            const res = await axios.get('/api/complaints/assigned', {
                 headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
             });
             setComplaints(res.data);
@@ -44,7 +44,7 @@ const StaffDashboard = () => {
 
     const fetchProfile = async () => {
         try {
-            const res = await axios.get('https://campus-complaint-system.onrender.com/api/auth/profile', {
+            const res = await axios.get('/api/auth/profile', {
                 headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
             });
             setUserInfo(res.data);
@@ -73,12 +73,12 @@ const StaffDashboard = () => {
         e.preventDefault();
         if (!selectedComplaint) return;
         try {
-        const formData = new FormData();
-        formData.append('remarks', remarks);
-        if (photo) formData.append('photo', photo);
-        await submitStaffUpdate(selectedComplaint, formData);
-        setSelectedComplaint(null);
-        setRefresh(r => !r);
+            const formData = new FormData();
+            formData.append('remarks', remarks);
+            if (photo) formData.append('photo', photo);
+            await submitStaffUpdate(selectedComplaint, formData);
+            setSelectedComplaint(null);
+            setRefresh(r => !r);
         } catch (error) {
             console.error('Error updating complaint:', error);
         }
@@ -86,7 +86,7 @@ const StaffDashboard = () => {
 
     const submitStaffUpdate = async (selectedComplaint, formData) => {
         try {
-            await axios.post(`https://campus-complaint-system.onrender.com/api/complaints/${selectedComplaint._id}/staff-update`, formData, {
+            await axios.post(`/api/complaints/${selectedComplaint._id}/staff-update`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                     Authorization: `Bearer ${localStorage.getItem('token')}`
@@ -102,8 +102,8 @@ const StaffDashboard = () => {
         .filter(c => {
             const matchesFilter = filter === 'all' || c.status === filter;
             const matchesSearch = c.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                                c.category.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                                c.description.toLowerCase().includes(searchTerm.toLowerCase());
+                c.category.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                c.description.toLowerCase().includes(searchTerm.toLowerCase());
             return matchesFilter && matchesSearch;
         })
         .sort((a, b) => {
@@ -248,20 +248,20 @@ const StaffDashboard = () => {
                     <div className="card-body">
                         <h6 className="card-title mb-3">Work Progress</h6>
                         <div className="progress mb-2" style={{ height: '25px' }}>
-                            <div 
-                                className="progress-bar bg-success" 
+                            <div
+                                className="progress-bar bg-success"
                                 style={{ width: `${(stats.resolved / stats.total) * 100}%` }}
                             >
                                 {stats.resolved} Resolved
                             </div>
-                            <div 
-                                className="progress-bar bg-warning" 
+                            <div
+                                className="progress-bar bg-warning"
                                 style={{ width: `${(stats.inProgress / stats.total) * 100}%` }}
                             >
                                 {stats.inProgress} In Progress
                             </div>
-                            <div 
-                                className="progress-bar bg-secondary" 
+                            <div
+                                className="progress-bar bg-secondary"
                                 style={{ width: `${(stats.pending / stats.total) * 100}%` }}
                             >
                                 {stats.pending} Pending
@@ -284,8 +284,8 @@ const StaffDashboard = () => {
                     </div>
                 ) : (
                     filteredAndSortedComplaints.map(c => (
-                    <div className="col-md-6 col-lg-4 mb-4" key={c._id}>
-                        <div className="card shadow-sm h-100">
+                        <div className="col-md-6 col-lg-4 mb-4" key={c._id}>
+                            <div className="card shadow-sm h-100">
                                 <div className="card-header bg-transparent">
                                     <div className="d-flex justify-content-between align-items-start">
                                         <h6 className="card-title mb-0 text-truncate" style={{ maxWidth: '200px' }}>
@@ -296,7 +296,7 @@ const StaffDashboard = () => {
                                         </span>
                                     </div>
                                 </div>
-                            <div className="card-body">
+                                <div className="card-body">
                                     <div className="mb-2">
                                         <span className="badge bg-info">{c.category}</span>
                                     </div>
@@ -305,7 +305,7 @@ const StaffDashboard = () => {
                                         {new Date(c.date).toLocaleDateString()}
                                     </p>
                                     <p className="card-text small mb-2">
-                                        <strong>Description:</strong> {c.description.length > 100 ? 
+                                        <strong>Description:</strong> {c.description.length > 100 ?
                                             c.description.substring(0, 100) + '...' : c.description}
                                     </p>
                                     {c.raisedBy && (
@@ -333,8 +333,8 @@ const StaffDashboard = () => {
                                     )}
                                 </div>
                                 <div className="card-footer bg-transparent">
-                                    <button 
-                                        className="btn btn-primary btn-sm w-100" 
+                                    <button
+                                        className="btn btn-primary btn-sm w-100"
                                         onClick={() => handleSelect(c)}
                                     >
                                         <i className="fas fa-edit me-1"></i>Update Progress
@@ -367,7 +367,7 @@ const StaffDashboard = () => {
                                                 <div className="border rounded p-3 bg-light">
                                                     <p><strong>Title:</strong> {selectedComplaint.title}</p>
                                                     <p><strong>Category:</strong> {selectedComplaint.category}</p>
-                                                    <p><strong>Status:</strong> 
+                                                    <p><strong>Status:</strong>
                                                         <span className={`badge bg-${statusColors[selectedComplaint.status]} ms-2`}>
                                                             {selectedComplaint.status}
                                                         </span>
@@ -375,38 +375,38 @@ const StaffDashboard = () => {
                                                     <p><strong>Date:</strong> {new Date(selectedComplaint.date).toLocaleString()}</p>
                                                 </div>
                                             </div>
-                                    <div className="mb-3">
+                                            <div className="mb-3">
                                                 <label className="form-label fw-bold">Description</label>
                                                 <div className="border rounded p-3 bg-light">
                                                     {selectedComplaint.description}
                                                 </div>
-                                    </div>
-                                    {selectedComplaint.imageUrl && (
-                                        <div className="mb-3">
+                                            </div>
+                                            {selectedComplaint.imageUrl && (
+                                                <div className="mb-3">
                                                     <label className="form-label fw-bold">Original Image</label>
                                                     <img src={selectedComplaint.imageUrl} alt="complaint" className="img-fluid rounded d-block" style={{ maxHeight: '200px' }} />
                                                 </div>
                                             )}
                                         </div>
                                         <div className="col-md-6">
-                                    <div className="mb-3">
+                                            <div className="mb-3">
                                                 <label className="form-label fw-bold">Your Update</label>
-                                        <textarea
-                                            className="form-control"
-                                            value={remarks}
-                                            onChange={e => setRemarks(e.target.value)}
+                                                <textarea
+                                                    className="form-control"
+                                                    value={remarks}
+                                                    onChange={e => setRemarks(e.target.value)}
                                                     placeholder="Describe the progress made, actions taken, or any updates..."
                                                     rows="4"
-                                            required
-                                        />
-                                    </div>
-                                    <div className="mb-3">
+                                                    required
+                                                />
+                                            </div>
+                                            <div className="mb-3">
                                                 <label className="form-label fw-bold">Progress Photo (optional)</label>
-                                                <input 
-                                                    type="file" 
-                                                    className="form-control" 
-                                                    accept="image/*" 
-                                                    onChange={e => setPhoto(e.target.files[0])} 
+                                                <input
+                                                    type="file"
+                                                    className="form-control"
+                                                    accept="image/*"
+                                                    onChange={e => setPhoto(e.target.files[0])}
                                                 />
                                                 <small className="text-muted">Upload a photo showing the work progress or completion</small>
                                             </div>

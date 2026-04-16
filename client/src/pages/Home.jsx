@@ -12,7 +12,7 @@ const Home = ({ userEmail, userRole }) => {
         // Fetch public feedbacks for testimonials
         const fetchFeedbacks = async () => {
             try {
-                const res = await axios.get('https://campus-complaint-system.onrender.com/api/feedback');
+                const res = await axios.get('/api/feedback');
                 if (isMounted) setFeedbacks(res.data.slice(-6)); // Show last 6 feedbacks
             } catch (error) {
                 if (isMounted) console.error('Error fetching feedbacks:', error);
@@ -24,22 +24,22 @@ const Home = ({ userEmail, userRole }) => {
             try {
                 console.log('Fetching statistics...');
                 const [complaintsRes, usersRes] = await Promise.all([
-                    axios.get('https://campus-complaint-system.onrender.com/api/stats/complaints'),
-                    axios.get('https://campus-complaint-system.onrender.com/api/stats/users')
+                    axios.get('/api/stats/complaints'),
+                    axios.get('/api/stats/users')
                 ]);
-                
+
                 console.log('Complaint stats response:', complaintsRes.data);
                 console.log('User stats response:', usersRes.data);
-                
+
                 const complaintStats = complaintsRes.data;
                 const userStats = usersRes.data;
-                
+
                 const newStats = {
                     resolved: complaintStats.resolved || 0,
                     users: userStats.total || 0,
                     responseTime: complaintStats.avgResponseTime || 24
                 };
-                
+
                 console.log('Setting stats to:', newStats);
                 if (isMounted) setStats(newStats);
             } catch (error) {
@@ -60,7 +60,7 @@ const Home = ({ userEmail, userRole }) => {
     return (
         <div>
             {/* Hero Section */}
-            <div className="hero-section text-white py-5" style={{ 
+            <div className="hero-section text-white py-5" style={{
                 background: 'linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%)',
                 minHeight: '60vh',
                 display: 'flex',
@@ -72,7 +72,7 @@ const Home = ({ userEmail, userRole }) => {
                             <h1 className="display-4 fw-bold mb-4">Smart Campus Complaint System</h1>
                             <h3 className="mb-4" style={{ color: '#FFD700' }}>Bharatiya Vidya Bhavan's Sardar Patel Institute of Technology (SPIT)</h3>
                             <p className="lead mb-4">Empowering students, staff, and administrators with a transparent and efficient complaint management system. Experience seamless issue resolution and real-time tracking.</p>
-                        {!userEmail && (
+                            {!userEmail && (
                                 <div className="d-flex gap-3">
                                     <button className="btn btn-warning btn-lg px-4" onClick={() => history.push('/login/student')}>
                                         <i className="fas fa-sign-in-alt me-2"></i>Login
@@ -80,9 +80,9 @@ const Home = ({ userEmail, userRole }) => {
                                     <button className="btn btn-outline-light btn-lg px-4" onClick={() => history.push('/register/student')}>
                                         <i className="fas fa-user-plus me-2"></i>Register
                                     </button>
-                            </div>
-                        )}
-                        {userEmail && (
+                                </div>
+                            )}
+                            {userEmail && (
                                 <div className="alert alert-success d-inline-block">
                                     <i className="fas fa-user me-2"></i>Welcome back, <strong>{userEmail}</strong> ({userRole})
                                 </div>
@@ -114,7 +114,7 @@ const Home = ({ userEmail, userRole }) => {
                                                 <button className="btn btn-info btn-lg" onClick={() => history.push('/my-complaints')}>
                                                     <i className="fas fa-list me-2"></i>My Complaints
                                                 </button>
-                                                
+
                                             </>
                                         )}
                                         {userRole === 'staff' && (
@@ -135,7 +135,7 @@ const Home = ({ userEmail, userRole }) => {
                 </div>
             )}
 
-            
+
             {/* Features Section */}
             <div className="container py-5">
                 <div className="text-center mb-5">
@@ -190,7 +190,7 @@ const Home = ({ userEmail, userRole }) => {
                                 </div>
                             </div>
                         </div>
-                        
+
                         <div className="col-md-4 mb-4">
                             <div className="card border-0 bg-success text-white">
                                 <div className="card-body p-4">
