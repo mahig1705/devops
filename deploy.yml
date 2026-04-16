@@ -1,6 +1,6 @@
 - name: Deploy Application
   hosts: localhost
-  become: false
+  become: true
 
   tasks:
 
@@ -12,9 +12,10 @@
 
     - name: Run backend
       shell: |
-        docker run -d -p 5000:5000 --name backend \
+        docker run -d -p 5000:5000 \
+        --name backend \
         -e MONGO_URI="mongodb+srv://mahig1705:Mahi%401705@cluster0.nfeadj3.mongodb.net/campus?retryWrites=true&w=majority" \
-        complaint-backend
+        siddhhhhh/campus-backend:latest
 
     - name: Stop old frontend
       shell: docker stop frontend || true
@@ -23,4 +24,7 @@
       shell: docker rm frontend || true
 
     - name: Run frontend
-      shell: docker run -d -p 3000:80 --name frontend complaint-frontend
+      shell: |
+        docker run -d -p 3000:3000 \
+        --name frontend \
+        siddhhhhh/campus-frontend:latest
