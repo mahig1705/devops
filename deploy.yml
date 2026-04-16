@@ -24,6 +24,6 @@
 
     - name: Run frontend
       shell: |
-        docker run -d -p 3000:3000 \
+        docker run -d -p 3000:80 \
         --name frontend \
         siddhhhhh/campus-frontend:latest
