@@ -1,6 +1,5 @@
 - name: Deploy Application
   hosts: localhost
-  become: true
 
   tasks:
 
