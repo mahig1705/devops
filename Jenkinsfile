@@ -1,19 +1,96 @@
 pipeline {
     agent any
 
+    environment {
+        DOCKER_HUB = "siddhhhhh"
+        BACKEND_IMAGE = "${DOCKER_HUB}/campus-backend"
+        FRONTEND_IMAGE = "${DOCKER_HUB}/campus-frontend"
+        EC2_IP = "15.206.122.232"
+    }
+
+    triggers {
+        pollSCM('* * * * *')   // checks every minute (auto build)
+    }
+
     stages {
-        stage('Build Docker Image') {
+
+        stage('Clone Code') {
             steps {
-                sh 'docker build -t complaint-backend ./server'
+                git branch: 'main', url: 'https://github.com/mahig1705/devops.git'
             }
         }
 
-        stage('Run Container') {
+        stage('Build Backend Image') {
             steps {
-                sh 'docker stop backend || true'
-                sh 'docker rm backend || true'
-                sh 'docker run -d -p 5000:5000 --name backend complaint-backend'
+                sh 'docker build -t $BACKEND_IMAGE ./server'
             }
+        }
+
+        stage('Build Frontend Image') {
+            steps {
+                sh 'docker build -t $FRONTEND_IMAGE ./client'
+            }
+        }
+
+        stage('Docker Login') {
+            steps {
+                withCredentials([usernamePassword(
+                    credentialsId: 'dockerhub-cred',
+                    usernameVariable: 'USER',
+                    passwordVariable: 'PASS'
+                )]) {
+                    sh 'echo $PASS | docker login -u $USER --password-stdin'
+                }
+            }
+        }
+
+        stage('Push Images') {
+            steps {
+                sh '''
+                docker push $BACKEND_IMAGE
+                docker push $FRONTEND_IMAGE
+                '''
+            }
+        }
+
+        stage('Deploy on EC2') {
+            steps {
+                sh '''
+                docker stop backend || true
+                docker rm backend || true
+                docker stop frontend || true
+                docker rm frontend || true
+
+                docker run -d -p 5000:5000 --name backend $BACKEND_IMAGE
+                docker run -d -p 3000:3000 --name frontend $FRONTEND_IMAGE
+                '''
+            }
+        }
+
+        stage('DAST - OWASP ZAP') {
+            steps {
+                sh '''
+                docker run --network="host" \
+                -v $(pwd):/zap/wrk/:rw \
+                owasp/zap2docker-stable zap-baseline.py \
+                -t http://localhost:3000 \
+                -r zap_report.html
+                '''
+            }
+        }
+    }
+
+    post {
+        always {
+            archiveArtifacts artifacts: 'zap_report.html', allowEmptyArchive: true
+        }
+
+        success {
+            echo "✅ Pipeline Success!"
+        }
+
+        failure {
+            echo "❌ Pipeline Failed!"
         }
     }
 }
