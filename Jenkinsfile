@@ -5,16 +5,15 @@ pipeline {
         DOCKER_HUB = "siddhhhhh"
         BACKEND_IMAGE = "${DOCKER_HUB}/campus-backend"
         FRONTEND_IMAGE = "${DOCKER_HUB}/campus-frontend"
-        EC2_IP = "15.206.122.232"
     }
 
     triggers {
-        pollSCM('* * * * *')   // checks every minute (auto build)
+        pollSCM('* * * * *')
     }
 
     stages {
 
-        stage('Clone Code') {
+        stage('Checkout Code') {
             steps {
                 git branch: 'main', url: 'https://github.com/mahig1705/devops.git'
             }
@@ -53,7 +52,7 @@ pipeline {
             }
         }
 
-        stage('Deploy on EC2') {
+        stage('Deploy Containers') {
             steps {
                 sh '''
                 docker stop backend || true
@@ -72,7 +71,7 @@ pipeline {
                 sh '''
                 docker run --network="host" \
                 -v $(pwd):/zap/wrk/:rw \
-                owasp/zap2docker-stable zap-baseline.py \
+                zaproxy/zap-stable zap-baseline.py \
                 -t http://localhost:3000 \
                 -r zap_report.html
                 '''
@@ -82,7 +81,11 @@ pipeline {
 
     post {
         always {
-            archiveArtifacts artifacts: 'zap_report.html', allowEmptyArchive: true
+            script {
+                if (fileExists('zap_report.html')) {
+                    archiveArtifacts artifacts: 'zap_report.html'
+                }
+            }
         }
 
         success {
