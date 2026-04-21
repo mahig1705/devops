@@ -1,0 +1,29 @@
+- name: Deploy Application
+  hosts: localhost
+
+  tasks:
+
+    - name: Stop old backend
+      shell: docker stop backend || true
+
+    - name: Remove old backend
+      shell: docker rm backend || true
+
+    - name: Run backend
+      shell: |
+        docker run -d -p 5000:5000 \
+        --name backend \
+        -e MONGO_URI="mongodb+srv://mahig1705:Mahi%401705@cluster0.nfeadj3.mongodb.net/campus?retryWrites=true&w=majority" \
+        siddhhhhh/campus-backend:latest
+
+    - name: Stop old frontend
+      shell: docker stop frontend || true
+
+    - name: Remove old frontend
+      shell: docker rm frontend || true
+
+    - name: Run frontend
+      shell: |
+        docker run -d -p 3000:80 \
+        --name frontend \
+        siddhhhhh/campus-frontend:latest
