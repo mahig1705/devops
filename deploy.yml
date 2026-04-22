@@ -1,29 +1,45 @@
-- name: Deploy Application
+- name: Deploy Campus Application
   hosts: localhost
+  connection: local
+  become: false
+  vars:
+    backend_image: "siddhhhhh/campus-backend:latest"
+    frontend_image: "siddhhhhh/campus-frontend:latest"
+    mongo_uri: "mongodb+srv://mahig1705:Mahi%401705@cluster0.nfeadj3.mongodb.net/campus?retryWrites=true&w=majority"
 
   tasks:
+    - name: Pull latest backend image
+      shell: docker pull {{ backend_image }}
 
-    - name: Stop old backend
-      shell: docker stop backend || true
+    - name: Pull latest frontend image
+      shell: docker pull {{ frontend_image }}
 
-    - name: Remove old backend
-      shell: docker rm backend || true
+    - name: Stop and remove old backend
+      shell: docker stop backend && docker rm backend || true
 
-    - name: Run backend
+    - name: Run backend container
       shell: |
         docker run -d -p 5000:5000 \
-        --name backend \
-        -e MONGO_URI="mongodb+srv://mahig1705:Mahi%401705@cluster0.nfeadj3.mongodb.net/campus?retryWrites=true&w=majority" \
-        siddhhhhh/campus-backend:latest
+          --name backend \
+          --restart unless-stopped \
+          -e MONGO_URI="{{ mongo_uri }}" \
+          {{ backend_image }}
 
-    - name: Stop old frontend
-      shell: docker stop frontend || true
+    - name: Stop and remove old frontend
+      shell: docker stop frontend && docker rm frontend || true
 
-    - name: Remove old frontend
-      shell: docker rm frontend || true
-
-    - name: Run frontend
+    - name: Run frontend container
+      # Port 3000 on host → port 80 inside container (Nginx serves React)
       shell: |
         docker run -d -p 3000:80 \
-        --name frontend \
-        siddhhhhh/campus-frontend:latest
+          --name frontend \
+          --restart unless-stopped \
+          {{ frontend_image }}
+
+    - name: Verify containers are running
+      shell: docker ps --filter "name=backend" --filter "name=frontend" --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}"
+      register: container_status
+
+    - name: Print container status
+      debug:
+        msg: "{{ container_status.stdout }}"
