@@ -34,7 +34,7 @@ pipeline {
         stage('Docker Login') {
             steps {
                 withCredentials([usernamePassword(
-                    credentialsId: 'dockerhub-creds',
+                    credentialsId: 'dockerhub-creds',  
                     usernameVariable: 'USER',
                     passwordVariable: 'PASS'
                 )]) {
@@ -69,8 +69,11 @@ pipeline {
         stage('DAST - OWASP ZAP') {
             steps {
                 sh '''
+                mkdir -p /tmp/zap
+                chmod 777 /tmp/zap
+
                 docker run --network="host" \
-                -v $(pwd):/zap/wrk/:rw \
+                -v /tmp/zap:/zap/wrk/:rw \
                 zaproxy/zap-stable zap-baseline.py \
                 -t http://localhost:3000 \
                 -r zap_report.html
@@ -82,8 +85,8 @@ pipeline {
     post {
         always {
             script {
-                if (fileExists('zap_report.html')) {
-                    archiveArtifacts artifacts: 'zap_report.html'
+                if (fileExists('/tmp/zap/zap_report.html')) {
+                    archiveArtifacts artifacts: '/tmp/zap/zap_report.html', allowEmptyArchive: true
                 }
             }
         }
