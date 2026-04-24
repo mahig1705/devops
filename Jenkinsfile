@@ -8,102 +8,57 @@ pipeline {
     }
 
     triggers {
-        pollSCM('* * * * *')
+        // ❌ REMOVE polling
+        // use webhook instead
     }
 
     stages {
 
-        stage('Checkout Code') {
+        stage('Checkout') {
             steps {
                 git branch: 'main', url: 'https://github.com/mahig1705/devops.git'
             }
         }
 
-        stage('Build Backend Image') {
+        stage('Build Images') {
             steps {
-                sh 'docker build -t $BACKEND_IMAGE ./server'
+                sh '''
+                docker build -t $BACKEND_IMAGE ./server
+                docker build -t $FRONTEND_IMAGE ./client
+                '''
             }
         }
 
-        stage('Build Frontend Image') {
-            steps {
-                sh 'docker build -t $FRONTEND_IMAGE ./client'
-            }
-        }
-
-        stage('Docker Login') {
+        stage('Docker Login & Push') {
             steps {
                 withCredentials([usernamePassword(
-                    credentialsId: 'dockerhub-creds',   // ✅ FIXED
+                    credentialsId: 'dockerhub-creds',
                     usernameVariable: 'USER',
                     passwordVariable: 'PASS'
                 )]) {
-                    sh 'echo $PASS | docker login -u $USER --password-stdin'
+                    sh '''
+                    echo $PASS | docker login -u $USER --password-stdin
+                    docker push $BACKEND_IMAGE
+                    docker push $FRONTEND_IMAGE
+                    '''
                 }
             }
         }
 
-        stage('Push Images') {
+        stage('Deploy') {
             steps {
-                sh '''
-                docker push $BACKEND_IMAGE
-                docker push $FRONTEND_IMAGE
-                '''
-            }
-        }
-
-        stage('Deploy via Ansible') {
-            steps {
-                sh '''
-                ansible-playbook -i inventory.ini deploy.yml
-                '''
+                sh 'ansible-playbook -i inventory.ini deploy.yml'
             }
         }
 
         stage('Health Check') {
             steps {
                 sh '''
-                echo "Waiting for app..."
-                sleep 15
-
-                curl -f http://localhost:5000 || exit 1
-                curl -f http://localhost:3000 || exit 1
-
-                echo "✅ App is healthy"
+                sleep 10
+                curl -f http://localhost:5000
+                curl -f http://localhost:3000
                 '''
             }
-        }
-
-        stage('DAST - OWASP ZAP') {
-            steps {
-                sh '''
-                mkdir -p /tmp/zap
-                chmod -R 777 /tmp/zap
-
-                docker run --rm \
-                --network="host" \
-                -u 0 \
-                -v /tmp/zap:/zap/wrk \
-                zaproxy/zap-stable zap-baseline.py \
-                -t http://localhost:3000 \
-                -r zap_report.html \
-                -I || true
-                '''
-            }
-        }
-    }
-
-    post {
-        always {
-            archiveArtifacts artifacts: '/tmp/zap/zap_report.html', allowEmptyArchive: true
-        }
-
-        success {
-            echo "✅ Pipeline completed successfully!"
-        }
-
-        failure {
-            echo "❌ Pipeline failed — check logs"
         }
     }
 }

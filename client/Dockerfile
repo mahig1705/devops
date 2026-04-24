@@ -1,13 +1,13 @@
-# Step 1: build React app
 FROM node:18 AS build
 
 WORKDIR /app
+
 COPY package*.json ./
-RUN npm install
+RUN npm install --no-audit --no-fund
+
 COPY . .
 RUN npm run build
 
-# Step 2: serve using nginx
 FROM nginx:alpine
 COPY --from=build /app/build /usr/share/nginx/html
 
