@@ -9,16 +9,21 @@
     mongo_uri: "mongodb+srv://mahig1705:Mahi%401705@cluster0.nfeadj3.mongodb.net/campus?retryWrites=true&w=majority"
 
   tasks:
+    # 🔽 Pull latest images
     - name: Pull latest backend image
       shell: docker pull {{ backend_image }}
 
     - name: Pull latest frontend image
       shell: docker pull {{ frontend_image }}
 
-    # 🔥 FIXED (no conflict ever)
+    # 🔽 Remove old containers (safe)
     - name: Remove old backend container
       shell: docker rm -f backend || true
 
+    - name: Remove old frontend container
+      shell: docker rm -f frontend || true
+
+    # 🔽 Run backend
     - name: Run backend container
       shell: |
         docker run -d -p 5000:5000 \
@@ -27,9 +32,7 @@
           -e MONGO_URI="{{ mongo_uri }}" \
           {{ backend_image }}
 
-    - name: Remove old frontend container
-      shell: docker rm -f frontend || true
-
+    # 🔽 Run frontend
     - name: Run frontend container
       shell: |
         docker run -d -p 3000:80 \
@@ -37,10 +40,12 @@
           --restart unless-stopped \
           {{ frontend_image }}
 
+    # 🔽 Verify containers (FIXED)
     - name: Verify containers
-      shell: docker ps --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}"
+      shell: docker ps
       register: container_status
 
+    # 🔽 Print output
     - name: Print container status
       debug:
         msg: "{{ container_status.stdout }}"
