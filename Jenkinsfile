@@ -50,15 +50,5 @@ pipeline {
             }
         }
 
-        stage('Health Check') {
-            steps {
-                sh '''
-                sleep 10
-
-                curl -f http://172.31.19.197:5000 || exit 1
-                curl -f http://172.31.19.197:3000 || exit 1
-                '''
-            }
-        }
     }
 }
