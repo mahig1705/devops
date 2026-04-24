@@ -8,8 +8,7 @@ pipeline {
     }
 
     triggers {
-        // ❌ REMOVE polling
-        // use webhook instead
+        githubPush()
     }
 
     stages {
